@@ -1,0 +1,40 @@
+version: '3'
+services:
+  postgis:
+    image: 'kartoza/postgis:12.1'
+    hostname: postgis
+    container_name: imposm-worker_postgis
+    env_file:
+      - ./postgis.env
+    volumes:
+      - 'pgdata:/var/lib/postgresql'
+    expose:
+      - '5432'
+    restart: on-failure
+
+  pgadmin:
+    image: 'dpage/pgadmin4'
+    environment:
+      - PGADMIN_LISTEN_PORT=80
+      - PGADMIN_DEFAULT_EMAIL=admin@geotekne.com.ar
+      - PGADMIN_DEFAULT_PASSWORD=geotekne
+    ports:
+      - "80:80"
+    depends_on:
+      - postgis
+    volumes:
+      - './conf/pgadmin/servers.json:/pgadmin4/servers.json'
+    restart: always
+
+  imposm-worker:
+    image: 'geotekne/imposm-worker:1.0.0'
+    hostname: imposm-worker
+    environment:
+      - PARAMETERS=-i /pbfs -c imposm-worker_postgis -v 12.1 -p 5432 -u docker -w docker -d gis
+    volumes:
+      - './pbfs/:/pbfs'
+    depends_on:
+      - postgis
+
+volumes:
+     pgdata:
