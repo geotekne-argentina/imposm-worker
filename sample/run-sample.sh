@@ -3,7 +3,7 @@
 
 # Download my Selection PBF (ie. Estonia)
 echo -e "\n --- Download OSM High Resolution Sample PBF file ---"
-curl "https://download.geofabrik.de/europe/estonia-latest.osm.pbf" -o ./pbfs/andorra-latest.osm.pbf
+curl "https://download.geofabrik.de/europe/estonia-latest.osm.pbf" -o ./pbfs/estonia-latest.osm.pbf
 
 echo -e "\n --- Importing PBF into Postgis database ---"
 docker-compose up
