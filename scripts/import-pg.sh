@@ -55,7 +55,7 @@ chown $USERNAME: work
 # Wait for Postgis to be ready
 echo -e "\n----------- Waiting for Postgis to be ready"
 RETRIES=30
-until pg_isready -h $PG_CONTAINER -U docker -p 5432 -d gis || [ $RETRIES -eq 0 ]; do
+until pg_isready -h $PG_CONTAINER -U $USERNAME -p $PG_PORT -d $PG_DATABASE || [ $RETRIES -eq 0 ]; do
   echo "Waiting for Postgis, $((RETRIES-=1)) remaining attempts..."
   sleep 2
 done
